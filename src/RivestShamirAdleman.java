@@ -5,7 +5,7 @@ class RivestShamirAdleman
 {
     private Primes primeNum = new Primes();
     private long n = -1;
-    private long d = -1;
+    private long e = -1;
 
     public ArrayList<String> Encode(String text)
     {
@@ -21,16 +21,16 @@ class RivestShamirAdleman
         n = p * q;
 
         long m = (p - 1) * (q - 1);
-        d = CalcD(m);
+        e = CalcE(m);
 
-        long e = CalcE(d, m);
+        long d = CalcD(e, m);
 
         for (int i = 0; i < text.length(); i++)
         {
             int index = text.charAt(i);
 
             c = new BigInteger(Integer.toString(index));
-            c = c.modPow(new BigInteger(Long.toString(e)), new BigInteger(Long.toString(n)));
+            c = c.modPow(new BigInteger(Long.toString(d)), new BigInteger(Long.toString(n)));
 
             result.add(c.toString());
         }
@@ -43,13 +43,13 @@ class RivestShamirAdleman
         String result = "";
         BigInteger m;
 
-        if (d > 0 && n > 0)
+        if (e > 0 && n > 0)
         {
             for (int i = 0; i < input.size(); i++)
             {
                 m = new BigInteger(input.get(i));
 
-                m = m.modPow(new BigInteger(Long.toString(d)), new BigInteger(Long.toString(n)));
+                m = m.modPow(new BigInteger(Long.toString(e)), new BigInteger(Long.toString(n)));
 
                 int index = m.intValue();
                 result += (char) index;
@@ -58,8 +58,8 @@ class RivestShamirAdleman
 
         return result;
     }
-
-    private long CalcD(long m)
+    //вычисляем взаимнопростое число
+    private long CalcE(long m)
     {
         long d = m - 1;
 
@@ -74,8 +74,8 @@ class RivestShamirAdleman
 
         return d;
     }
-
-    private long CalcE(long d, long m)
+    //вычисляем обратномультиплекативное число числу е
+    private long CalcD(long d, long m)
     {
         long e = 10;
 
